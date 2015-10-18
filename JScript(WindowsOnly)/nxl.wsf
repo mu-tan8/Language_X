@@ -1,0 +1,26 @@
+﻿<?XML version="1.0" standalone="yes" ?>
+<package>
+	<job id="Default">
+		<?job debug="true" ?>
+		<script language="JScript"><![CDATA[
+			function js_echo(text){
+				WScript.Echo(text);
+			}
+		]]></script>
+		<script language="JScript" src="nxl.js" />
+		<script language="JScript"><![CDATA[
+			var Args = WScript.Arguments;
+			if (1 > Args.length){
+				WScript.Quit(0);
+			};
+
+			var xml = WScript.CreateObject("Microsoft.XMLDOM");
+			xml.load(Args(0));
+			xml.async = false;
+
+			root = xml.documentElement;
+
+			parse(root);
+		]]></script>
+	</job>
+</package>
