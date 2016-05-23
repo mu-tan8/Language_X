@@ -7,11 +7,11 @@ XML1.0に準拠した記法でプログラムソースを記述する
 
 プログラミング言語である。
 
-現時点ではインタプリター言語として機能するものを
-
-目指して開発中である。
-
 尚、詳しい仕様については策定中である。
+
+[仕様書 draft specs](https://github.com/mu-tan8/Language_X/wiki)
+
+[協議場 discussion forum](https://github.com/mu-tan8/Language_X/issues)
 
 ## リポジトリ構成
 
