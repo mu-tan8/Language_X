@@ -1,6 +1,8 @@
 # Language_X
 used XML1.0 new programing language (ReThinking...)
 
+License : non-commercial only.
+
 # X言語
 ## X言語とは
 XML1.0に準拠した記法でプログラムソースを記述する
