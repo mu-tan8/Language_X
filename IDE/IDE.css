@@ -1,0 +1,22 @@
+﻿div#xml{
+	padding:10px;
+	overflow:auto;
+	border:solid 1px gray ;
+}
+div#xml>div{
+	width:600px;
+	height:300px;
+	padding:10px;
+	margin:5%;
+	overflow:auto;
+}
+div[draggable] {
+	width:400px;
+	height:100px;
+	margin:5%;
+	overflow:auto;
+}
+div[draggable] div {
+	width:90%;
+	height:50%;
+}

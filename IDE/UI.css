@@ -1,0 +1,16 @@
+﻿div.element{
+	background-color:#99ff99;
+	border:ridge 5px #00ff00;
+}
+div.text{
+	background-color:#99ffff;
+	border:solid 1px #00ffff;
+}
+div.comment{
+	background-color:#999999;
+	border:dashed 3px #cccccc;
+}
+div.processing-instruction{
+	background-color:#ccccff;
+	border:outset 3px #0000ff;
+}

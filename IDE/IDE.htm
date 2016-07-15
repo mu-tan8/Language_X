@@ -1,0 +1,131 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>X-IDE　―Ｘ言語統合開発環境</title>
+<link rel="stylesheet" type="text/css" href="UI.css" />
+<script src="init.js">//</script>
+<script src="GDE.js">//</script>
+<style type="text/css">/*<![CDATA[*/
+body{
+	width:100%;
+	height:100%;
+	padding:10px;
+}
+iframe#oXML{
+	width:70%;
+	height:400px;
+	overflow:auto;
+	border:solid 1px gray ;
+	float:left;
+	margin:10px;
+}
+div#menu{
+	position:absolute;
+	display:none;
+	background-color:white;
+	border:outset 1px gray;
+}
+div#menu>div{
+	border:outset 1px gray;
+	padding:5px;
+}
+div#board{
+	position:fixed;
+	bottom:10px;
+	right:10px;
+	padding:30px;
+	overflow:auto;
+}
+div[draggable] {
+	width:400px;
+	height:100px;
+	margin:5%;
+	overflow:auto;
+}
+div[draggable] div {
+	width:90%;
+	height:50%;
+}
+textarea#debug{
+	width:70%;
+	height:50px;
+}
+/*]]>*/</style>
+</head>
+<body>
+<form>
+<label>Xソースファイル：<input type="file" accept="application/xml" onchange="loadAs(this)" /></label>
+<input type="button" onclick="saveAs('temp.xml')" value="ファイルに保存" />
+<input type="button" value="新規作成" onclick="newDocument();init()" />
+<button type="button" onclick="preview()">ソースの表示</button>
+<button type="button" onclick="eraseBoard()">コピー要素の削除</button></form>
+<iframe id="oXML"></iframe>
+<form name="order" style="width:300px;float:left;">
+<fieldset>
+<legend>ブロック要素</legend>
+<select name="insertTag" onchange="autoSelect(this.value)">
+<option disabled="disabled"></option>
+<option value="">要素名：</option>
+<option value="var">var</option>
+<option value="if">if～then～else</option>
+<option value="switch">switch</option>
+<option value="case">～case</option>
+<option value="default">～default</option>
+<option value="func">func</option>
+<option value="return">～return</option>
+<option value="for">for</option>
+<option value="continue">～continue</option>
+<option value="while">while</option>
+<option value="break">～break</option>
+<option value="assign">assign</option>
+<option value="value">value</option>
+<option value="calc">calc</option>
+</select>
+<br />
+<input name="elemName" />
+<fieldset>
+<legend>属性</legend>
+<div id="attr"></div>
+<label>@<input name="attrName" size="3" /></label><label>=<input name="attrValue" size="5" /></label>
+<input type="button" onclick="addAttr(oTag,{'name':document.order.attrName.value,'value':document.order.attrValue.value})" value="属性の追加" />
+</fieldset>
+</fieldset>
+<input type="button" onclick="autoInsert()" value="ブロック要素の一括追加" />
+<input type="reset" onclick="delAttr();document.order.elemName.hidden = false" />
+<fieldset>
+<legend>ブロック値</legend>
+<label><input type="checkbox" name="vMode" value="comment" />コメントブロックとして扱う</label><br />
+<label>文字列値：<br />
+<textarea name="strValue" style="width:100%;height:50px;"></textarea>
+</label>
+<input type="button" onclick="addValue(oTag)" value="値の追加" />
+</fieldset>
+<fieldset>
+<legend>処理命令</legend>
+<label>ターゲット名：
+<input name="piTarget" />
+</label><br />
+<label>データ値：<br />
+<textarea name="piData" style="width:100%;height:30px;"></textarea>
+</label>
+<input type="button" value="処理命令の追加" onclick="addPI(oTag,{'target':document.order.piTarget.value,'data':document.order.piData.value})" />
+</fieldset>
+</form>
+<br style="clear:left;" />
+<div id="board" title="ここに要素がコピーされます。コピーされた要素はドラッグすることができます。" ondragstart="doDrag(event)">
+</div>
+<div id="menu">
+<div onclick="addTag(oTag,prompt('要素&quot;'+oTag.getElementsByTagName('span')[0].innerHTML+'&quot;に追加する子要素名',''))">要素の追加</div>
+<div onclick="removeTag(oTag)">要素の削除</div>
+<div onclick="copyTag(oTag)">要素のコピー</div>
+<div onclick="cutTag(oTag)">要素の切り取り</div>
+<div onclick="eraseBoard()" hidden="true">コピー要素の削除</div>
+<div onclick="oMenu.style.display = 'none'">閉じる</div>
+</div>
+<form>
+X-コンソール：<button type="reset">X-コンソールのクリア</button><br />
+<textarea id="debug" readonly="readonly"></textarea>
+</form>
+</body>
+</html>
