@@ -5,7 +5,7 @@
 	xmlns:xhtml="http://www.w3.org/1999/xhtml"
 	xmlns="http://www.w3.org/1999/xhtml">
 
-<xsl:output method="xml" />
+<xsl:output method="xml" omit-xml-declaration="yes" />
 
 <xsl:variable name="ns" select="/xhtml:html/xhtml:body/xhtml:div[@id='xml']/xhtml:div[@class='element']/xhtml:span[@class='namespace']" />
 
