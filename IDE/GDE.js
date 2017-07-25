@@ -31,7 +31,7 @@ function loadURL(URL){
 		oAXML.async = false;
 		oAXML.load(URL);
 		return oAXML;
-	}
+	}catch(e){}
 	throw new Error("XML API , not support!");
 }
 function createDocument( XML , XSL ){
