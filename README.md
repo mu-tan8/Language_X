@@ -15,6 +15,8 @@ XML1.0に準拠した記法でプログラムソースを記述する
 
 [協議場 discussion forum](https://github.com/mu-tan8/Language_X/issues)
 
+[index.html](https://mu-tan8.github.io/Language_X/)
+
 ## リポジトリ構成
 
 * IDE　（Ｘ言語統合開発環境サンプル） X language Graphical IntegratedDevelopmentEnvironment Sample.
@@ -36,4 +38,3 @@ Windows Scripting Host (WScript.exe)によって実行される。
 これにより、ブラウザ上でソースファイルを編集することが可能となる。
 
 ただし読み書きでXMLHttpRequestを使っているため、ローカル上では動作しない。
-
