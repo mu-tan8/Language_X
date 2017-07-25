@@ -365,7 +365,11 @@ function openMenu(event){
 }
 function DocToStr(oDoc){
 	if (window.XMLSerializer){
-		return (new XMLSerializer()).serializeToString(oDoc);
+		try{
+			return (new XMLSerializer()).serializeToString(oDoc);
+		}catch(){
+			callbackf(e);
+		}
 	}else if(oDoc.xml){
 		return oDoc.xml;
 	}else{
