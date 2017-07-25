@@ -20,7 +20,7 @@ function loadURL(URL){
 		return null;
 	})();
 	try{
-		oXHR.responseType = 'document';
+	//	oXHR.responseType = 'document';
 		oXHR.open('get' , URL , false);
 		oXHR.send(null);
 		return oXHR.responseXML;
