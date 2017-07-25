@@ -367,7 +367,7 @@ function DocToStr(oDoc){
 	if (window.XMLSerializer){
 		try{
 			return (new XMLSerializer()).serializeToString(oDoc);
-		}catch(){
+		}catch(e){
 			callbackf(e);
 		}
 	}else if(oDoc.xml){
