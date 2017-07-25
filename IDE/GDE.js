@@ -2,14 +2,21 @@
 var oMenu , oXML , oXSL = [] , oDocument , oXHR , FileName;
 
 
+function callbackf(mes){
+	console.log(mes);
+}
 function loadURL(URL){
 	var oXHR = (function(){
 		try{
 			return new XMLHttpRequest();
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		try{
 			return new ActiveXObject("Msxml2.XMLHTTP");
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		return null;
 	})();
 	try{
@@ -17,21 +24,29 @@ function loadURL(URL){
 		oXHR.open('get' , URL , false);
 		oXHR.send(null);
 		return oXHR.responseXML;
-	}catch(e){}
+	}catch(e){
+		callbackf(e);
+	}
 	var oAXML = (function(){
 		try{
 			return new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		try{
 			return new ActiveXObject("Microsoft.XMLDOM");
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		return null;
 	})();
 	try{
 		oAXML.async = false;
 		oAXML.load(URL);
 		return oAXML;
-	}catch(e){}
+	}catch(e){
+		callbackf(e);
+	}
 	//throw new Error("XML API , not support!");
 }
 function createDocument( XML , XSL ){
@@ -48,7 +63,9 @@ function createDocument( XML , XSL ){
 			oXSLT.input = XML;
 			oXSLT.transform();
 			return oXSLT.output;
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 	}
 }
 
@@ -355,24 +372,34 @@ function DocToStr(oDoc){
 function StrToXMLDOM(str){
 	try {
 		return (new DOMParser()).parseFromString(str , 'application/xml');
-	}catch(e){};
+	}catch(e){
+		callbackf(e);
+	};
 	try {
 		return loadURL(URL.createObjectURL(new Blob([str],{'type':'application/xml'})));
-	}catch(e){}
+	}catch(e){
+		callbackf(e);
+	}
 	var oAXML = (function (){
 		try {
 			return new ActiveXObject('Msxml2.FreeThreadedDOMDocument');
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		try {
 			return new ActiveXObject('Microsoft.XMLDOM');
-		}catch(e){}
+		}catch(e){
+			callbackf(e);
+		}
 		return null;
 	})();
 	try {
 		oAXML.async = false;
 		oAXML.loadXML(str);
 		return oAXML;
-	} catch(e) {}
+	} catch(e) {
+		callbackf(e);
+	}
 	return null;
 }
 
@@ -409,7 +436,9 @@ function loadAs(obj){
 		}
 		oFR.readAsText(obj.files[0]);
 
-	}catch(e){}
+	}catch(e){
+		callbackf(e);
+	}
 }
 function saveAs(){
 	oXML = document.getElementById('oXML');
