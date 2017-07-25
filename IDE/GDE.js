@@ -32,7 +32,7 @@ function loadURL(URL){
 		oAXML.load(URL);
 		return oAXML;
 	}catch(e){}
-	throw new Error("XML API , not support!");
+	//throw new Error("XML API , not support!");
 }
 function createDocument( XML , XSL ){
 	
