@@ -20,7 +20,6 @@ function loadURL(URL){
 		return null;
 	})();
 	try{
-	//	oXHR.responseType = 'document';
 		oXHR.open('get' , URL , false);
 		oXHR.send(null);
 		return oXHR.responseXML;
@@ -52,9 +51,13 @@ function loadURL(URL){
 function createDocument( XML , XSL ){
 	
 	if(window.XSLTProcessor){
-		var oXSLT = new XSLTProcessor();
-		oXSLT.importStylesheet(XSL);
-		return oXSLT.transformToDocument(XML);
+		try {
+			var oXSLT = new XSLTProcessor();
+			oXSLT.importStylesheet(XSL);
+			return oXSLT.transformToDocument(XML);
+		}catch(e){
+			callbackf(e);
+		}
 	}else{
 		try {
 			var oXSLT = new ActiveXObject("Msxml2.XSLTemplate");
