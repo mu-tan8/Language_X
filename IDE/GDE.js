@@ -16,7 +16,7 @@ function createXHRObject(){
 	}catch(e){
 		callbackf(e);
 	}
-	return null;
+	//return null;
 }
 function createXMLObject(){
 	try{
@@ -29,7 +29,7 @@ function createXMLObject(){
 	}catch(e){
 		callbackf(e);
 	}
-	return null;
+	//return null;
 }
 function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	if (window.XMLSerializer){
@@ -113,7 +113,7 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 			callbackf(e);
 		}
 	}
-	return null;
+	//return null;
 }
 
 	oXSL[0] = loadURL('XtoGDE.xsl');
