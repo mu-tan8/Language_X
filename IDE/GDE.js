@@ -1,45 +1,95 @@
 ﻿var oTag = null;
-var oMenu , oXML , oXSL = [] , oDocument , oXHR , FileName;
+var oMenu , oXML , oXSL = [] , oDocument , oXHR , FileName = 'temp.xml' , AppName;
 
 
 function callbackf(mes){
 	console.log(mes);
 }
-function loadURL(URL){
-	var oXHR = (function(){
+function createXHRObject(){
+	try{
+		return new XMLHttpRequest();
+	}catch(e){
+		callbackf(e);
+	}
+	try{
+		return new ActiveXObject("Msxml2.XMLHTTP");
+	}catch(e){
+		callbackf(e);
+	}
+	return null;
+}
+function createXMLObject(){
+	try{
+		return new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
+	}catch(e){
+		callbackf(e);
+	}
+	try{
+		return new ActiveXObject("Microsoft.XMLDOM");
+	}catch(e){
+		callbackf(e);
+	}
+	return null;
+}
+function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
+	if (window.XMLSerializer){
 		try{
-			return new XMLHttpRequest();
+			return (new XMLSerializer()).serializeToString(oDoc);
 		}catch(e){
 			callbackf(e);
 		}
-		try{
-			return new ActiveXObject("Msxml2.XMLHTTP");
+	}else if('xml' in oDoc){
+		return oDoc.xml;
+	}else{
+		return (('innerHTML' in oDoc) ? oDoc.innerHTML : oDoc.documentElement.outerHTML);
+	}
+}
+function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
+	try {
+		return (new DOMParser()).parseFromString(str , 'application/xml');
+	}catch(e){
+		callbackf(e);
+	};
+	try {
+		return loadURL(URL.createObjectURL(new Blob([str],{'type':'application/xml'})));
+	}catch(e){
+		callbackf(e);
+	}
+	var oAXML = (function (){
+		try {
+			return new ActiveXObject('Msxml2.FreeThreadedDOMDocument');
+		}catch(e){
+			callbackf(e);
+		}
+		try {
+			return new ActiveXObject('Microsoft.XMLDOM');
 		}catch(e){
 			callbackf(e);
 		}
 		return null;
 	})();
+	try {
+		oAXML.async = false;
+		oAXML.loadXML(str);
+		return oAXML;
+	} catch(e) {
+		callbackf(e);
+	}
+	return null;
+}
+
+function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
 	try{
+		var oXHR = createXHRObject();
 		oXHR.open('get' , URL , false);
+		oXHR.responseType = 'document';
 		oXHR.send(null);
 		return oXHR.responseXML;
 	}catch(e){
 		callbackf(e);
 	}
-	var oAXML = (function(){
-		try{
-			return new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
-		}catch(e){
-			callbackf(e);
-		}
-		try{
-			return new ActiveXObject("Microsoft.XMLDOM");
-		}catch(e){
-			callbackf(e);
-		}
-		return null;
-	})();
 	try{
+		var oAXML = createXMLObject();
 		oAXML.async = false;
 		oAXML.load(URL);
 		return oAXML;
@@ -48,7 +98,7 @@ function loadURL(URL){
 	}
 	//throw new Error("XML API , not support!");
 }
-function createDocument( XML , XSL ){
+function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMObject , XSLDOMObject )
 	
 	if(window.XSLTProcessor){
 		try {
@@ -65,11 +115,17 @@ function createDocument( XML , XSL ){
 			oXSLT = oXSLT.createProcessor();
 			oXSLT.input = XML;
 			oXSLT.transform();
-			return oXSLT.output;
+			return StrToXMLDOM(oXSLT.output);
+		}catch(e){
+			callbackf(e);
+		}
+		try {
+			return XML.transformNode(XSL);
 		}catch(e){
 			callbackf(e);
 		}
 	}
+	return null;
 }
 
 	oXSL[0] = loadURL('XtoGDE.xsl');
@@ -85,6 +141,9 @@ window.onload = function(){
 	}
 	oXML = document.getElementById('oXML');
 	oDocument = oXML.document || oXML.contentDocument;
+
+	AppName = document.title;
+	
 }
 function doDrag(event){
 	if (event.target && event.target.getAttribute('draggable')){
@@ -363,52 +422,6 @@ function openMenu(event){
 	oMenu.getElementsByTagName('div')[4].hidden = !(document.getElementById('board').getElementsByTagName('*').length);
 	event.preventDefault();
 }
-function DocToStr(oDoc){
-	if (window.XMLSerializer){
-		try{
-			return (new XMLSerializer()).serializeToString(oDoc);
-		}catch(e){
-			callbackf(e);
-		}
-	}else if(oDoc.xml){
-		return oDoc.xml;
-	}else{
-		return oDoc.innerHTML || oDoc.documentElement.outerHTML;
-	}
-}
-function StrToXMLDOM(str){
-	try {
-		return (new DOMParser()).parseFromString(str , 'application/xml');
-	}catch(e){
-		callbackf(e);
-	};
-	try {
-		return loadURL(URL.createObjectURL(new Blob([str],{'type':'application/xml'})));
-	}catch(e){
-		callbackf(e);
-	}
-	var oAXML = (function (){
-		try {
-			return new ActiveXObject('Msxml2.FreeThreadedDOMDocument');
-		}catch(e){
-			callbackf(e);
-		}
-		try {
-			return new ActiveXObject('Microsoft.XMLDOM');
-		}catch(e){
-			callbackf(e);
-		}
-		return null;
-	})();
-	try {
-		oAXML.async = false;
-		oAXML.loadXML(str);
-		return oAXML;
-	} catch(e) {
-		callbackf(e);
-	}
-	return null;
-}
 
 function loadAs(obj){
 	oXML = document.getElementById('oXML');
@@ -419,12 +432,13 @@ function loadAs(obj){
 		var oFR = new FileReader();
 		oFR.onload = function(event){
 
-			var oXHR = new XMLHttpRequest();
+			var oXHR = createXHRObject();
 			oXHR.onload = function(){
 
 					oDocument.getElementsByTagName('body')[0].innerHTML = createDocument(oXHR.responseXML,oXSL[0]).getElementsByTagName('body')[0].innerHTML;
 					init();
-					FileName = oFR.name;
+					FileName = obj.files[0].name;
+					document.title = AppName + ' ['+FileName+']';
 
 					oXHR = oFR = null;
 			}
@@ -432,8 +446,8 @@ function loadAs(obj){
 				document.getElementById('debug').value += oXHR.statusText;
 				oXHR = oFR = null;
 			}
-			oXHR.responseType = 'document';
 			oXHR.open('get' , URL.createObjectURL(new Blob([oFR.result],{type:'application/xml'})));
+			oXHR.responseType = 'document';
 			oXHR.send(null);
 
 		}
@@ -442,6 +456,23 @@ function loadAs(obj){
 			oFR = null;
 		}
 		oFR.readAsText(obj.files[0]);
+		return true;
+
+	}catch(e){
+		callbackf(e);
+	}
+	try {
+
+		var oFSO = new ActiveXObject("Scripting.FileSystemObject");
+		if (oFSO.FileExists(obj.value)){
+
+			oDocument.getElementsByTagName('body')[0].innerHTML = createDocument(StrToXMLDOM(oFSO.OpenTextFile(obj.value).ReadAll()),oXSL[0]).getElementsByTagName('body')[0].innerHTML;
+			init();
+			FileName = oFSO.GetFileName(obj.value);
+			document.title = AppName + ' ['+FileName+']';
+		}
+
+		return true;
 
 	}catch(e){
 		callbackf(e);
@@ -453,57 +484,82 @@ function saveAs(){
 
 	var oDOM = StrToXMLDOM(DocToStr(oDocument));	//	cleaning DOM.
 
-	var nm = prompt('File Name :',''+(FileName || 'temp.xml'));
-	FileName = (nm) ? nm : 'temp.xml' ;
+	var nm = prompt('ファイル名を入力してください（半角英数字のみ）\nInput a File Name (alphabets or numbers only) :',''+FileName);
+	if (nm){
+		FileName = (nm.match(/[^a-zA-Z0-9_\.]/)) ? 'temp.xml' : nm ;
+	}else{	// null or emptystrings
+		return false;
+	}
+	document.title = AppName + ' ['+FileName+']';
+
+	var buf = DocToStr(createDocument(oDOM,oXSL[1]));
+	buf = (buf.match(/^\<\?xml/i)) ? buf : '<?xml version="1.0"?>'+buf ;
 
 	var a = document.createElement('a');
-	if ( 'download' in a ){
+	if ('msSaveBlob' in navigator){		// MSIE
 
-		a.href = URL.createObjectURL(new Blob([DocToStr(createDocument(oDOM,oXSL[1]))] , {type:'application/xml'}));
+		navigator.msSaveBlob(new Blob([buf] , {type:'application/xml'}) , FileName);
+
+	}else if ( 'download' in a ){	// 	if supported download attribute with anchor element
+
+		a.href = URL.createObjectURL(new Blob([buf] , {type:'application/xml'}));
 		a.download = FileName;
 		a.type = 'application/xml';
 		a.click();
+
+	}else if(window.URL && window.Blob ){	//	if supported createObjectURL method and blob object 
+
+		try {
+
+			var oXHR = createXHRObject();
+			oXHR.onload = function(){
+
+				var oFR = new FileReader();
+
+				oFR.onload = function (){
+					window.open(oFR.result);	//	data URI open the new window . ( Hopefully the download will start )
+					oDOM = oXHR = null;
+				}
+				oFR.onerror = function(e){
+					document.getElementById('debug').value += oFR.error;
+				}
+
+				oFR.readAsDataURL(oXHR.response);	//	create data URI scheme ( data:// ) from blob Object . 
+
+			}
+			oXHR.onerror = function(event){
+				document.getElementById('debug').value += oXHR.statusText;
+			}
+
+			oXHR.open('get' , URL.createObjectURL(new Blob([buf] , {type:'application/xml'})));	//	create blob URI scheme ( blob:// ) .   
+
+			oXHR.responseType = 'blob';
+			if ('overrideMimeType' in oXHR){
+				oXHR.overrideMimeType('application/octet-stream');
+			}else {
+				oXHR.setRequestHeader('Content-Type','application/octet-stream');
+			}
+			oXHR.setRequestHeader('Content-Disposition','attachment;filename='+FileName+'');
+			oXHR.send(null);
+
+		}catch(e){
+			callbackf(e);
+		}
 
 	}else{
 
 		var w = window.open();
 		w.document.open('application/xml');
-		w.document.write(createDocument(oDOM,oXSL[1]));
+		w.document.write(buf);
 		w.document.close();
-		w.alert('右クリックからファイル名をつけて保存してね。');
+		w.document.title = FileName;
+		w.alert('このページにファイル名をつけて保存してね。\n Please , Save As this page !');
+		w = null;
 
 	}
-	oDOM = a = null;
+	oDOM = buf = a = null;
 
-	//	Lost Logia (Attach a Name to the Download File )
-/*
-	var oXHR = new XMLHttpRequest();
-	oXHR.onload = function(){
-
-		var oFR = new FileReader();
-
-		oFR.onload = function (){
-			window.open(oFR.result);
-			oDOM = oXHR = null;
-		}
-		oFR.onerror = function(e){
-			document.getElementById('debug').value += oFR.error;
-		}
-
-		oFR.readAsDataURL(oXHR.response);
-
-	}
-	oXHR.onerror = function(event){
-		document.getElementById('debug').value += oXHR.statusText;
-	}
-	oXHR.overrideMimeType('application/octet-stream');
-	oXHR.responseType = 'blob';
-	oXHR.open('get' , URL.createObjectURL(new Blob([(new XMLSerializer()).serializeToString(oXSLT[1].transformToDocument(oDOM))] , {type:'application/xml'})));
-	oXHR.setRequestHeader('Content-Disposition','attachment;filename='+nam+'');
-	oXHR.send(null);
-*/
-
-	
+	return true;	
 }
 function preview(){
 	oXML = document.getElementById('oXML');
