@@ -45,23 +45,27 @@ function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	}
 }
 function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
-	try {
-		return (new DOMParser()).parseFromString(str , 'application/xml');
-	}catch(e){
-		callbackf(e);
-	};
-	try {
-		return loadURL(URL.createObjectURL(new Blob([str],{'type':'application/xml'})));
-	}catch(e){
-		callbackf(e);
-	}
-	try {
-		var oAXML = createXMLObject();
-		oAXML.async = false;
-		oAXML.loadXML(str);
-		return oAXML;
-	} catch(e) {
-		callbackf(e);
+	if (window.DOMParser){
+		try {
+			return (new DOMParser()).parseFromString(str , 'application/xml');
+		}catch(e){
+			callbackf(e);
+		}
+	}else if(window.URL){
+		try {
+			return loadURL(URL.createObjectURL(new Blob([str],{'type':'application/xml'})));
+		}catch(e){
+			callbackf(e);
+		}
+	}else{
+		try {
+			var oAXML = createXMLObject();
+			oAXML.async = false;
+			oAXML.loadXML(str);
+			return oAXML;
+		} catch(e) {
+			callbackf(e);
+		}
 	}
 	//return null;
 }
@@ -107,10 +111,12 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 		}catch(e){
 			callbackf(e);
 		}
-		try {
-			return XML.transformNode(XSL);
-		}catch(e){
-			callbackf(e);
+		if ('transformNode' in XML){
+			try {
+				return XML.transformNode(XSL);
+			}catch(e){
+				callbackf(e);
+			}
 		}
 	}
 	//return null;
