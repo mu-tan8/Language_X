@@ -58,35 +58,41 @@ function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
 			callbackf(e);
 		}
 	}else{
-		try {
-			var oAXML = createXMLObject();
-			oAXML.async = false;
-			oAXML.loadXML(str);
-			return oAXML;
-		} catch(e) {
-			callbackf(e);
+		var oAXML = createXMLObject();
+		if (oAXML){
+			try{
+				oAXML.async = false;
+				oAXML.loadXML(str);
+				return oAXML;
+			} catch(e) {
+				callbackf(e);
+			}
 		}
 	}
 	//return null;
 }
 
 function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
-	try{
-		var oXHR = createXHRObject();
-		oXHR.open('get' , URL , false);
-		oXHR.responseType = 'document';
-		oXHR.send(null);
-		return oXHR.responseXML;
-	}catch(e){
-		callbackf(e);
+	var oXHR = createXHRObject();
+	if (oXHR){
+		try{
+			oXHR.open('get' , URL , false);
+			//oXHR.responseType = 'document';
+			oXHR.send(null);
+			return oXHR.responseXML;
+		}catch(e){
+			callbackf(e);
+		}
 	}
-	try{
-		var oAXML = createXMLObject();
-		oAXML.async = false;
-		oAXML.load(URL);
-		return oAXML;
-	}catch(e){
-		callbackf(e);
+	var oAXML = createXMLObject();
+	if (oAXML){
+		try{
+			oAXML.async = false;
+			oAXML.load(URL);
+			return oAXML;
+		}catch(e){
+			callbackf(e);
+		}
 	}
 	//throw new Error("XML API , not support!");
 }
