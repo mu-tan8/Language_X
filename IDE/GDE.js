@@ -506,10 +506,11 @@ function saveAs(){
 
 				oFR.onload = function (){
 					window.open(oFR.result);	//	data URI open the new window . ( Hopefully the download will start )
-					oDOM = oXHR = null;
+					oDOM = buf = oXHR = null;
 				}
 				oFR.onerror = function(e){
 					document.getElementById('debug').value += oFR.error;
+					oDOM = buf = oXHR = null;
 				}
 
 				oFR.readAsDataURL(oXHR.response);	//	create data URI scheme ( data:// ) from blob Object . 
@@ -517,6 +518,7 @@ function saveAs(){
 			}
 			oXHR.onerror = function(event){
 				document.getElementById('debug').value += oXHR.statusText;
+				oDOM = buf = oXHR = null;
 			}
 
 			oXHR.open('get' , URL.createObjectURL(new Blob([buf] , {type:'application/xml'})));	//	create blob URI scheme ( blob:// ) .   
@@ -542,12 +544,12 @@ function saveAs(){
 		w.document.close();
 		w.document.title = FileName;
 		w.alert('このページにファイル名をつけて保存してね。\n Please , Save As this page !');
-		w = null;
+		oDOM = buf = w = null;
 
 	}
-	oDOM = buf = a = null;
+	a = null;
 
-	return true;	
+	//return true;
 }
 function preview(){
 	oXML = document.getElementById('oXML');
