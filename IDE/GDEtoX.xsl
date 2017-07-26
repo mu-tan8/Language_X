@@ -3,9 +3,9 @@
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xhtml="http://www.w3.org/1999/xhtml"
-	xmlns="http://www.w3.org/1999/xhtml">
+	xmlns="http://mutan8.exout.net/">
 
-<xsl:output method="xml" omit-xml-declaration="yes" />
+<xsl:output method="xml" encoding="UTF-8" media-type="application/xml" omit-xml-declaration="no" />
 
 <xsl:variable name="ns" select="/xhtml:html/xhtml:body/xhtml:div[@id='xml']/xhtml:div[@class='element']/xhtml:span[@class='namespace']" />
 
