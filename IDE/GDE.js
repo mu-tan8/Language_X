@@ -55,27 +55,15 @@ function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
 	}catch(e){
 		callbackf(e);
 	}
-	var oAXML = (function (){
-		try {
-			return new ActiveXObject('Msxml2.FreeThreadedDOMDocument');
-		}catch(e){
-			callbackf(e);
-		}
-		try {
-			return new ActiveXObject('Microsoft.XMLDOM');
-		}catch(e){
-			callbackf(e);
-		}
-		return null;
-	})();
 	try {
+		var oAXML = createXMLObject();
 		oAXML.async = false;
 		oAXML.loadXML(str);
 		return oAXML;
 	} catch(e) {
 		callbackf(e);
 	}
-	return null;
+	//return null;
 }
 
 function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
