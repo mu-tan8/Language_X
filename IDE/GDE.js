@@ -77,7 +77,7 @@ function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
 	if (oXHR){
 		try{
 			oXHR.open('get' , URL , false);
-			oXHR.responseType = 'document';
+			//oXHR.responseType = 'document';
 			oXHR.send(null);
 			return oXHR.responseXML;
 		}catch(e){
