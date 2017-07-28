@@ -40,9 +40,10 @@ function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 			callbackf(e);
 		}
 	}else if('xml' in oDoc){
+		console.log('xml');
 		return oDoc.xml;
 	}else{
-		console.log(oDoc.documentElement);
+		console.log('oDoc.documentElement');
 		return (('innerHTML' in oDoc) ? oDoc.innerHTML : oDoc.documentElement.outerHTML);
 	}
 }
