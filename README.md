@@ -40,8 +40,11 @@ Windows Scripting Host (WScript.exe)によって実行される。
 ~~ただし読み書きでXMLHttpRequestを使っているため、ローカル上では動作しない。~~
 
 現在、最新版ではActiveXObjectを併記したことにより、
+
 InternetExplorerでのみローカル上からでも動作可能となっている。
 
  テスト環境；
+ 
  Windows7 IE11 64bit
+ 
  Google Chrome 最新版
