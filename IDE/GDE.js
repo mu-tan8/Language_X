@@ -568,7 +568,7 @@ function preview(){
 	oDocument = oXML.document || oXML.contentDocument;
 
 	var oDOM = StrToXMLDOM(DocToStr(oDocument));
-console.log(createDocument(oDOM,oXSL[1]));
+console.log(DocToStr(createDocument(oDOM,oXSL[1])));
 	alert(DocToStr(createDocument(oDOM,oXSL[1])));
 
 	oDOM = null;
