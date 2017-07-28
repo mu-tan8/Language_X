@@ -34,16 +34,13 @@ function createXMLObject(){
 function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	if (window.XMLSerializer){
 		try{
-			console.log('xmlserial');
 			return (new XMLSerializer()).serializeToString(oDoc);
 		}catch(e){
 			callbackf(e);
 		}
 	}else if('xml' in oDoc){
-		console.log('xml');
 		return oDoc.xml;
 	}else{
-		console.log('oDoc.documentElement');
 		return (('innerHTML' in oDoc) ? oDoc.innerHTML : oDoc.documentElement.outerHTML);
 	}
 }
@@ -113,10 +110,10 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 		try {
 			var oXSLT = new ActiveXObject("Msxml2.XSLTemplate");
 			oXSLT.stylesheet = XSL;
-			oXSLT = oXSLT.createProcessor();
-			oXSLT.input = XML;
-			oXSLT.transform();
-			return StrToXMLDOM(oXSLT.output);
+			var oXSLTP = oXSLT.createProcessor();
+			oXSLTP.input = XML;
+			oXSLTP.transform();
+			return StrToXMLDOM(oXSLTP.output);
 		}catch(e){
 			callbackf(e);
 		}
