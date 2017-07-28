@@ -73,6 +73,16 @@ function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
 }
 
 function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
+	var oAXML = createXMLObject();
+	if (oAXML){
+		try{
+			oAXML.async = false;
+			oAXML.load(URL);
+			return oAXML;
+		}catch(e){
+			callbackf(e);
+		}
+	}
 	var oXHR = createXHRObject();
 	if (oXHR){
 		try{
@@ -80,16 +90,6 @@ function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
 			//oXHR.responseType = 'document';
 			oXHR.send(null);
 			return oXHR.responseXML;
-		}catch(e){
-			callbackf(e);
-		}
-	}
-	var oAXML = createXMLObject();
-	if (oAXML){
-		try{
-			oAXML.async = false;
-			oAXML.load(URL);
-			return oAXML;
 		}catch(e){
 			callbackf(e);
 		}
@@ -107,6 +107,7 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 			callbackf(e);
 		}
 	}else{
+		
 		try {
 			var oXSLT = new ActiveXObject("Msxml2.XSLTemplate");
 			oXSLT.stylesheet = XSL;
