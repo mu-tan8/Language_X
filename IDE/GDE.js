@@ -119,6 +119,7 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 		}
 		if ('transformNode' in XML){
 			try {
+				console.log('throw');
 				return XML.transformNode(XSL);
 			}catch(e){
 				callbackf(e);
@@ -568,7 +569,7 @@ function preview(){
 	oDocument = oXML.document || oXML.contentDocument;
 
 	var oDOM = StrToXMLDOM(DocToStr(oDocument));
-console.log(DocToStr(createDocument(oDOM,oXSL[1])));
+
 	alert(DocToStr(createDocument(oDOM,oXSL[1])));
 
 	oDOM = null;
