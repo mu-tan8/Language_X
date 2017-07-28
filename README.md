@@ -38,6 +38,7 @@ Windows Scripting Host (WScript.exe)によって実行される。
 これにより、ブラウザ上でソースファイルを編集することが可能となる。
 
 ~~ただし読み書きでXMLHttpRequestを使っているため、ローカル上では動作しない。~~
+
 現在、最新版ではActiveXObjectを併記したことにより、
 InternetExplorerでのみローカル上からでも動作可能となっている。
 
