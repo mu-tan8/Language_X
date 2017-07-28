@@ -34,6 +34,7 @@ function createXMLObject(){
 function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	if (window.XMLSerializer){
 		try{
+			console.log('xmlserial');
 			return (new XMLSerializer()).serializeToString(oDoc);
 		}catch(e){
 			callbackf(e);
@@ -41,6 +42,7 @@ function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	}else if('xml' in oDoc){
 		return oDoc.xml;
 	}else{
+		console.log(oDoc.documentElement);
 		return (('innerHTML' in oDoc) ? oDoc.innerHTML : oDoc.documentElement.outerHTML);
 	}
 }
@@ -119,7 +121,6 @@ function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMOb
 		}
 		if ('transformNode' in XML){
 			try {
-				console.log('throw');
 				return XML.transformNode(XSL);
 			}catch(e){
 				callbackf(e);
