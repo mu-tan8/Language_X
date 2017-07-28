@@ -15,7 +15,12 @@ XML1.0に準拠した記法でプログラムソースを記述する
 
 [協議場 discussion forum](https://github.com/mu-tan8/Language_X/issues)
 
+X言語 ホームページ
 [index.html](https://mu-tan8.github.io/Language_X/)
+
+※こちらの X-Language G-IDE Sample から
+
+IDEの動作を確認できます。
 
 ## リポジトリ構成
 
