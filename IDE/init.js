@@ -4,7 +4,7 @@
 
 	oDocument.getElementsByTagName('body')[0].innerHTML =
 		'<div id="xml">'
-	+	'<span class="xml">?xml <span class="version">version="1.0"</span>?</span>'
+	+	'<span class="xml">&lt;?xml <span class="version">version="1.0"</span>?&gt;</span>'
 	+	'<div class="element" style="background-color:#ffff66;" onclick="oTag = event.target">'
 	+	'<span class="name" style="position:absolute;">source</span>'
 	+	'<div class="element" draggable="true"><span class="name">var</span><span class="attribute" draggable="true">@<span class="name">name</span>=<span class="value" contentEditable="true">a</span></span></div>'
@@ -14,6 +14,19 @@
 	oDocument.getElementsByTagName('head')[0].innerHTML = '<link rel="stylesheet" type="text/css" href="IDE.css" />'
 	+	'<link rel="stylesheet" type="text/css" href="UI.css" />';
 }
+/*	chCC = function(Tag){
+		if (Tag && Tag.style){
+			var oCSS = (document.defaultView) ? document.defaultView.getComputedStyle(Tag,'') : Tag.style ;
+			var text = ['backgroundColor','color'];
+			for (var n = 0;n < 2;n++){
+				if (oCSS[text[n]].match(/^rgb/i)){
+					var number = oCSS[text[n]].match(/\d+/g);
+					Tag.style[text[n]] = 'rgb('+(255 - number[0])+','+(255 - number[1])+','+(255 - number[2])+')';
+				}
+			}
+		}
+	}
+*/
 function init(){
 	oXML = document.getElementById('oXML');
 	oDocument = oXML.document || oXML.contentDocument;
@@ -31,7 +44,9 @@ function init(){
 		openMenu(event);
 	}
 	oDiv.onclick = function (event){
+	//	chCC(oTag);
 		oTag = event.target;
+	//	chCC(event.target);
 	}
 	oDiv.ondblclick = function (event){
 		oTag = event.target;

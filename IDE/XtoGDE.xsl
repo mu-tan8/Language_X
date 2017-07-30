@@ -4,11 +4,13 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns="http://www.w3.org/1999/xhtml">
 
+<xsl:output method="html" version="5.0" doctype-system="about:legacy-compat" />
+
 <xsl:template match="/">
 	<html>
 	<body>
 	<div id="xml">
-		<span class="declare">?xml <span class="version">version="1.0"</span>?</span>
+		<span class="declare"><![CDATA[<]]>?xml <span class="version">version="1.0"</span>?<![CDATA[>]]></span>
 		<xsl:apply-templates select="child::*" />
 	</div>
 	</body>
