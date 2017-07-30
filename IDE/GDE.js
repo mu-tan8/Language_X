@@ -1,11 +1,11 @@
-﻿var oTag = null;
+﻿var oTag = oDragTag = null;
 var oMenu , oXML , oXSL = [] , oDocument , oXHR , FileName = 'temp.xml' , AppName;
 
 
 function callbackf(mes){
 	console.log(mes);
 }
-function createXHRObject(){
+function createXHRObject(){	//	Return XMLHTTPRequest Object 
 	try{
 		return new XMLHttpRequest();
 	}catch(e){
@@ -18,7 +18,7 @@ function createXHRObject(){
 	}
 	//return null;
 }
-function createXMLObject(){
+function createXMLObject(){	//	Required use MSIE XSLTemplate . Return XMLDocumentObject on ActiveXObject
 	try{
 		return new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
 	}catch(e){
@@ -32,6 +32,9 @@ function createXMLObject(){
 	//return null;
 }
 function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
+	if (!oDoc.documentElement){
+		return '';
+	}
 	if (window.XMLSerializer){
 		try{
 			return (new XMLSerializer()).serializeToString(oDoc);
@@ -45,6 +48,9 @@ function DocToStr(oDoc){	//	[Strings] DocToStr( XMLDOMObject )
 	}
 }
 function StrToXMLDOM(str){	//	[XMLDOMObject] StrToXMLDOM( XMLStrings )
+	if (!str){
+		return createXMLObject() || createXHRObject();
+	}
 	if (window.DOMParser){
 		try {
 			return (new DOMParser()).parseFromString(str , 'application/xml');
@@ -97,7 +103,11 @@ function loadURL(URL){	//	[XMLDOMObject] loadURL( Strings )
 	//throw new Error("XML API , not support!");
 }
 function createDocument( XML , XSL ){	//	[XMLDOMObject] createDocument( XMLDOMObject , XSLDOMObject )
-	
+
+	if (!XML.documentElement || !XSL.documentElement){
+		return '';
+	}
+
 	if(window.XSLTProcessor){
 		try {
 			var oXSLT = new XSLTProcessor();
@@ -148,25 +158,25 @@ window.onload = function(){
 }
 function doDrag(event){
 	if (event.target && event.target.getAttribute('draggable')){
-		oTag = event.target;
+		oDragTag = event.target;
 	}
 }
 function allowDrop(event){
 	if (event.target){
 		if (event.target.tagName == 'DIV'){
-			if (oTag.className != 'attribute' || (event.target.className == 'element' && oTag.className == 'attribute')){
+			if (oDragTag.className != 'attribute' || (event.target.className == 'element' && oDragTag.className == 'attribute')){
 				event.preventDefault();
 			}
 		}
 	}
 }
 function doDrop(event){
-	if (event.target && !oTag.contains(event.target)){
+	if (event.target && !oDragTag.contains(event.target)){
 		if (event.target.tagName == 'DIV'){
-				oTag.parentNode.removeChild(oTag);
-				oTag.style.margin = '5%';
-				event.target.appendChild(oTag);
-				oTag = null;
+				oDragTag.parentNode.removeChild(oDragTag);
+				oDragTag.style.margin = '5%';
+				event.target.appendChild(oDragTag);
+				oDragTag = null;
 				event.preventDefault();
 		}
 	}
