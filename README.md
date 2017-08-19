@@ -53,3 +53,8 @@ InternetExplorerでのみローカル上からでも動作可能となってい�
  Windows7 IE11 64bit
  
  Google Chrome 最新版
+ 
+ Mozilla firefox 最新版
+
+ Mozilla firefox ESR 32bit
+ 
