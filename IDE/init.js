@@ -14,9 +14,10 @@
 	oDocument.getElementsByTagName('head')[0].innerHTML = '<link rel="stylesheet" type="text/css" href="IDE.css" />'
 	+	'<link rel="stylesheet" type="text/css" href="UI.css" />';
 }
+	// withhold
 /*	chCC = function(Tag){
 		if (Tag && Tag.style){
-			var oCSS = (document.defaultView) ? document.defaultView.getComputedStyle(Tag,'') : Tag.style ;
+			var oCSS = ('getComputedStyle' in window) ? window.getComputedStyle(Tag,'') : Tag.style ;
 			var text = ['backgroundColor','color'];
 			for (var n = 0;n < 2;n++){
 				if (oCSS[text[n]].match(/^rgb/i)){
@@ -30,25 +31,37 @@
 function init(){
 	oXML = document.getElementById('oXML');
 	oDocument = oXML.document || oXML.contentDocument;
-	oDiv = oDocument.getElementById('xml').getElementsByTagName('div')[0];
-	oDiv.ondragstart = function (event){
+	oRoot = oDocument.getElementById('xml');
+	oRootDiv = oRoot.getElementsByTagName('div')[0];
+	oSpan = oRoot.getElementsByTagName('span');
+	for (var i = 0;i < oSpan.length;i++){
+		oSpan[i].ondragover = function (event){
+			denyDrop(event);
+		}
+	}
+	oRootDiv.ondragstart = function (event){
 		doDrag(event);
 	}
-	oDiv.ondragover = function (event){
+	oRootDiv.ondragover = function (event){
 		allowDrop(event);
 	}
-	oDiv.ondrop = function (event){
+	oRootDiv.ondrop = function (event){
 		doDrop(event);
 	}
-	oDiv.oncontextmenu = function (event){
+	oRootDiv.ondragend = function (event){
+		doneDrag(event);
+	}
+	oRootDiv.oncontextmenu = function (event){
 		openMenu(event);
 	}
-	oDiv.onclick = function (event){
-	//	chCC(oTag);
+	// withhold  
+/*	oRootDiv.onclick = function (event){
+		chCC(oTag);
 		oTag = event.target;
-	//	chCC(event.target);
+		chCC(event.target);
+		event.stopPropagation();
 	}
-	oDiv.ondblclick = function (event){
+*/	oRootDiv.ondblclick = function (event){
 		oTag = event.target;
 		if (oTag.className == 'element'){
 			oElem = oTag.getElementsByTagName('span')[0];

@@ -157,27 +157,56 @@ window.onload = function(){
 	
 }
 function doDrag(event){
-	if (event.target && event.target.getAttribute('draggable')){
-		oDragTag = event.target;
+	if (event.target){
+		if (event.dataTransfer){
+			event.dataTransfer.setData('text' , event.target.outerHTML);
+		}else if(event.target.getAttribute('draggable')){
+			oDragTag = event.target;
+		}
 	}
 }
 function allowDrop(event){
 	if (event.target){
-		if (event.target.tagName == 'DIV'){
+		if (event.dataTransfer){
+			event.dataTransfer.dropEffect = 'move';
+			event.preventDefault();
+		}else{
 			if (oDragTag.className != 'attribute' || (event.target.className == 'element' && oDragTag.className == 'attribute')){
 				event.preventDefault();
+				return false;
 			}
 		}
 	}
 }
+function denyDrop(event){
+	if (event.dataTransfer){
+		event.dataTransfer.dropEffect = 'none';
+		event.stopPropagation();
+	}
+}
 function doDrop(event){
-	if (event.target && !oDragTag.contains(event.target)){
-		if (event.target.tagName == 'DIV'){
-				oDragTag.parentNode.removeChild(oDragTag);
-				oDragTag.style.margin = '5%';
-				event.target.appendChild(oDragTag);
-				oDragTag = null;
+	if (event.target){
+		if (event.dataTransfer){
+			var data = event.dataTransfer.getData('text');
+			if(event.target.outerHTML != data){
+				event.target.insertAdjacentHTML('beforeend' , data);
 				event.preventDefault();
+			}
+			data = null;
+		}else if(!oDragTag.contains(event.target)){
+			oDragTag.parentNode.removeChild(oDragTag);
+			oDragTag.style.margin = '5%';
+			event.target.appendChild(oDragTag);
+			oDragTag = null;
+			event.preventDefault();
+			return false;
+		}
+	}
+}
+function doneDrag(event){
+	if (event.dataTransfer){
+		if (event.dataTransfer.dropEffect != 'none'){
+			event.target.outerHTML = '';
 		}
 	}
 }
