@@ -1,13 +1,15 @@
 # Language_X
 used XML1.0 new programing language (ReThinking...)
 
+This programing language name is "X-Language".
+
 License : non-commercial only.
 
 # X言語
 ## X言語とは
 XML1.0に準拠した記法でプログラムソースを記述する
 
-プログラミング言語である。
+"X言語"という名前のプログラミング言語である。
 
 尚、詳しい仕様については策定中である。
 
