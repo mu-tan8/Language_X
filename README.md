@@ -1,7 +1,7 @@
 # Language_X
-used XML1.0 new programing language (ReThinking...)
+used XML1.0 eXtensible hyper meta markup programming Language (ReThinking...)
 
-This programing language name is "X-Language".
+This programming language name is "X-Language".
 
 License : non-commercial only.
 
